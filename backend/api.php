@@ -1,18 +1,23 @@
 <?php
 
+// JSON válasz és CORS fejlécek beállítása
 header("Content-Type: application/json; charset=utf-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
+// Böngésző előzetes OPTIONS kérésének kezelése
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
+// Adatbázis kapcsolat betöltése
 require_once "db.php";
 
+// Aktuális HTTP metódus lekérése
 $method = $_SERVER["REQUEST_METHOD"];
 
+// GET kérés: notebookok listázása processzor és operációs rendszer adatokkal együtt
 if ($method === "GET") {
     $stmt = $pdo->query("
         SELECT 
@@ -40,6 +45,7 @@ if ($method === "GET") {
     exit;
 }
 
+// POST kérés: új notebook beszúrása az adatbázisba
 if ($method === "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -67,6 +73,7 @@ if ($method === "POST") {
     exit;
 }
 
+// PUT kérés: meglévő notebook adatainak módosítása
 if ($method === "PUT") {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -103,6 +110,7 @@ if ($method === "PUT") {
     exit;
 }
 
+// DELETE kérés: notebook törlése azonosító alapján
 if ($method === "DELETE") {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -114,3 +122,8 @@ if ($method === "DELETE") {
     echo json_encode(["message" => "Sikeres törlés"]);
     exit;
 }
+
+// Nem támogatott HTTP metódus kezelése
+http_response_code(405);
+echo json_encode(["error" => "Nem támogatott HTTP metódus"]);
+exit;
