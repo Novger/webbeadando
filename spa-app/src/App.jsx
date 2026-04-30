@@ -74,33 +74,38 @@ function LaptopAdvisor() {
 
 function App() {
     const [page, setPage] = useState("calculator");
-    
+
     return (
-        <div className="container">
-            <h1>SPA alkalmazás</h1>
+        <>
+            <header className="page-header">
+                <h1>Web programozás-1 Előadás Házi feladat</h1>
+            </header>
+            <div className="container">
+                <h1>SPA alkalmazás</h1>
 
-            <p>
-                Ez egy egyoldalas alkalmazás, ahol a felhasználó különböző funkciók között válthat oldalfrissítés nélkül.
-            </p>
+                <p>
+                    Ez egy egyoldalas alkalmazás, ahol a felhasználó különböző funkciók között válthat oldalfrissítés nélkül.
+                </p>
 
-            <nav className="menu">
-                <button onClick={() => setPage("calculator")}>
-                    Kalkulátor
+                <nav className="menu">
+                    <button onClick={() => setPage("calculator")}>
+                        Kalkulátor
+                    </button>
+                    <button onClick={() => setPage("advisor")}>
+                        Notebook ajánló
+                    </button>
+                </nav>
+
+                {page === "calculator" && <Calculator />}
+                {page === "advisor" && <LaptopAdvisor />}
+
+                <button onClick={() => {
+                    window.location.href = "/index.html";
+                }}>
+                    Vissza a főoldalra
                 </button>
-                <button onClick={() => setPage("advisor")}>
-                    Notebook ajánló
-                </button>
-            </nav>
-
-            {page === "calculator" && <Calculator />}
-            {page === "advisor" && <LaptopAdvisor />}
-
-            <button onClick={() => {
-                window.location.href = "/index.html";
-            }}>
-                Vissza a főoldalra
-            </button>
-        </div>
+            </div>
+        </>
     );
 }
 
