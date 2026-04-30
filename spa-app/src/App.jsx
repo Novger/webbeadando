@@ -74,10 +74,14 @@ function LaptopAdvisor() {
 
 function App() {
     const [page, setPage] = useState("calculator");
-
+    
     return (
         <div className="container">
-            <h1>SPA - Egyoldalas React alkalmazás</h1>
+            <h1>SPA alkalmazás</h1>
+
+            <p>
+                Ez egy egyoldalas alkalmazás, ahol a felhasználó különböző funkciók között válthat oldalfrissítés nélkül.
+            </p>
 
             <nav className="menu">
                 <button onClick={() => setPage("calculator")}>
@@ -92,10 +96,10 @@ function App() {
             {page === "advisor" && <LaptopAdvisor />}
 
             <button onClick={() => {
-    window.location.href = "/index.html";
-}}>
-    Vissza a főoldalra
-</button>
+                window.location.href = "/index.html";
+            }}>
+                Vissza a főoldalra
+            </button>
         </div>
     );
 }
