@@ -77,7 +77,13 @@ function App() {
     }
 
     return (
+         <>
+        <header className="page-header">
+            <h1>Web programozás-1 Előadás Házi feladat</h1>
+        </header>
+        
         <div className="container">
+
             <h1>React CRUD - Notebookok</h1>
             <h2>Notebook kezelő</h2>
             <div className="form">
@@ -148,11 +154,12 @@ function App() {
             </table>
 
             <button onClick={() => {
-    window.location.href = "/index.html";
-}}>
-    Vissza a főoldalra
-</button>
+                window.location.href = "/index.html";
+            }}>
+                Vissza a főoldalra
+            </button>
         </div>
+        </>
     );
 }
 

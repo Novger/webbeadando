@@ -54,3 +54,18 @@ h2 {
     margin-top: 5px;
     color: #12395c;
 }
+
+.page-header {
+    background: linear-gradient(135deg, #1e5799, #2989d8);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    font-size: 2em;
+    color: white;
+    margin: 0;
+}
