@@ -79,7 +79,7 @@ function App() {
     return (
         <div className="container">
             <h1>React CRUD - Notebookok</h1>
-
+            <h2>Notebook kezelő</h2>
             <div className="form">
                 <input type="hidden" name="id" value={form.id} />
 
