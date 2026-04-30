@@ -14,42 +14,51 @@ require_once "db.php";
 $method = $_SERVER["REQUEST_METHOD"];
 
 
-// JSON beolvasás ellenőrzéssel
+// ✅ ÚJ: egységes válasz
+function sendResponse($success, $data = null, $error = null, $statusCode = 200)
+{
+    http_response_code($statusCode);
+
+    echo json_encode([
+        "success" => $success,
+        "data" => $data,
+        "error" => $error
+    ], JSON_UNESCAPED_UNICODE);
+
+    exit;
+}
+
+
+// JSON beolvasás
 function getJsonInput()
 {
     $data = json_decode(file_get_contents("php://input"), true);
 
     if (!is_array($data)) {
-        http_response_code(400);
-        echo json_encode(["error" => "Érvénytelen JSON adat"]);
-        exit;
+        sendResponse(false, null, "Érvénytelen JSON adat", 400);
     }
 
     return $data;
 }
 
 
-// Kötelező mezők ellenőrzése
+// Kötelező mezők
 function validateRequiredFields($data, $fields)
 {
     foreach ($fields as $field) {
         if (!isset($data[$field]) || trim((string)$data[$field]) === "") {
-            http_response_code(400);
-            echo json_encode(["error" => "Hiányzó mező: " . $field]);
-            exit;
+            sendResponse(false, null, "Hiányzó mező: " . $field, 400);
         }
     }
 }
 
 
-// Szám mezők ellenőrzése
+// Szám mezők
 function validateNumericFields($data, $fields)
 {
     foreach ($fields as $field) {
         if (!isset($data[$field]) || !is_numeric($data[$field])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Hibás szám mező: " . $field]);
-            exit;
+            sendResponse(false, null, "Hibás szám mező: " . $field, 400);
         }
     }
 }
@@ -81,8 +90,7 @@ try {
             ORDER BY gep.id DESC
         ");
 
-        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
-        exit;
+        sendResponse(true, $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     // POST
@@ -119,8 +127,7 @@ try {
             ":db" => (int)$data["db"]
         ]);
 
-        echo json_encode(["message" => "Sikeres hozzáadás"]);
-        exit;
+        sendResponse(true, ["message" => "Sikeres hozzáadás"]);
     }
 
     // PUT
@@ -166,8 +173,7 @@ try {
             ":db" => (int)$data["db"]
         ]);
 
-        echo json_encode(["message" => "Sikeres módosítás"]);
-        exit;
+        sendResponse(true, ["message" => "Sikeres módosítás"]);
     }
 
     // DELETE
@@ -182,16 +188,11 @@ try {
             ":id" => (int)$data["id"]
         ]);
 
-        echo json_encode(["message" => "Sikeres törlés"]);
-        exit;
+        sendResponse(true, ["message" => "Sikeres törlés"]);
     }
 
-    http_response_code(405);
-    echo json_encode(["error" => "Nem támogatott HTTP metódus"]);
-    exit;
+    sendResponse(false, null, "Nem támogatott HTTP metódus", 405);
 
 } catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(["error" => "Adatbázis hiba történt"]);
-    exit;
+    sendResponse(false, null, "Adatbázis hiba történt", 500);
 }
