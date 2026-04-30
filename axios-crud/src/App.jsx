@@ -52,9 +52,14 @@ function App() {
     }
 
     async function loadLaptops() {
-        const res = await axios.get(API);
-        setLaptops(res.data);
+    const res = await axios.get(API);
+
+    if (res.data.success === true) {
+        setLaptops(res.data.data);
+    } else {
+        alert(res.data.error || "Hiba történt a notebookok betöltésekor.");
     }
+}
 
     async function saveLaptop() {
         if (
