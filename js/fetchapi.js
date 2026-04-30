@@ -25,26 +25,35 @@ async function loadOptions() {
 
 async function loadData() {
     let res = await fetch(API);
-    let data = await res.json();
+    let response = await res.json();
 
     let table = document.getElementById("table");
     table.innerHTML = "";
 
-    data.forEach(l => {
-    table.innerHTML += `
-        <tr>
-            <td>${l.gyarto}</td>
-            <td>${l.tipus}</td>
-            <td>${l.memoria}</td>
-            <td>${l.ar}</td>
-            <td>${l.processzor_gyarto} ${l.processzor_tipus}</td>
-            <td>${l.oprendszer_nev}</td>
-            <td>
-                <button onclick="torles(${l.id})">Törlés</button>
-            </td>
-        </tr>
-    `;
-});
+    if (!response.success) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="7">Hiba történt: ${response.error}</td>
+            </tr>
+        `;
+        return;
+    }
+
+    response.data.forEach(l => {
+        table.innerHTML += `
+            <tr>
+                <td>${l.gyarto}</td>
+                <td>${l.tipus}</td>
+                <td>${l.memoria}</td>
+                <td>${l.ar}</td>
+                <td>${l.processzor_gyarto} ${l.processzor_tipus}</td>
+                <td>${l.oprendszer_nev}</td>
+                <td>
+                    <button onclick="torles(${l.id})">Törlés</button>
+                </td>
+            </tr>
+        `;
+    });
 }
 
 async function addLaptop() {
