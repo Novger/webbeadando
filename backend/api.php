@@ -93,7 +93,7 @@ try {
         sendResponse(true, $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
-    // POST
+        // POST
     if ($method === "POST") {
         $data = getJsonInput();
 
@@ -127,7 +127,7 @@ try {
             ":db" => (int)$data["db"]
         ]);
 
-        sendResponse(true, ["message" => "Sikeres hozzáadás"]);
+        sendResponse(true, ["message" => "Sikeres hozzáadás"], null, 201);
     }
 
     // PUT
