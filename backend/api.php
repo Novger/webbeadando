@@ -173,7 +173,11 @@ try {
             ":db" => (int)$data["db"]
         ]);
 
-        sendResponse(true, ["message" => "Sikeres módosítás"]);
+        if ($stmt->rowCount() === 0) {
+    sendResponse(false, null, "Nincs ilyen ID", 404);
+}
+
+sendResponse(true, ["message" => "Sikeres módosítás"], null, 200);
     }
 
     // DELETE
@@ -191,7 +195,11 @@ try {
         sendResponse(true, ["message" => "Sikeres törlés"]);
     }
 
-    sendResponse(false, null, "Nem támogatott HTTP metódus", 405);
+    if ($stmt->rowCount() === 0) {
+    sendResponse(false, null, "Nincs ilyen ID", 404);
+}
+
+sendResponse(true, ["message" => "Sikeres törlés"], null, 200);
 
 } catch (PDOException $e) {
     sendResponse(false, null, "Adatbázis hiba történt", 500);
